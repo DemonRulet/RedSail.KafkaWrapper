@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Confluent.Kafka;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Options;
 
-namespace Kafka
+namespace WrapperKafkaApi
 {
     public interface IWrapperProducer
     {
@@ -16,12 +18,22 @@ namespace Kafka
         public const string Server = "Server";
         public const string Topic = "Topic";
         public const string Partition = "Partition";
-
     }
 
+    public class ProducerOptions
+    {
+        public ProducerConfig producerConfig { set; get; }
+        //public string BootstrapServers { set; get; }
+        //public string Topic { set; get; }
+        //public int Partition { set; get; }
+    }
     public class WrapperProducer : IWrapperProducer
     {
-
+        public WrapperProducer(IOptions<ProducerConfig> options)
+        {
+            Console.WriteLine("yes");
+            Console.WriteLine(options.Value.BootstrapServers);
+        }
         private Dictionary<string, string> CreateProducerParams(string config, char paramSeparator, char keyValueSeparator)
         {
             Dictionary<string, string> producerConfig = new();
@@ -63,7 +75,7 @@ namespace Kafka
                     return producer.ProduceAsync(topic, message);
                 }
 
-                catch(Exception exception)
+                catch (Exception exception)
                 {
                     Console.WriteLine(exception.Message);
                 }
@@ -73,15 +85,4 @@ namespace Kafka
         }
     }
 
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-            string config = "Server=localhost:9092;Topic=topic;Partition=0;";
-            IWrapperProducer wrapperProducer = new WrapperProducer();
-            await wrapperProducer.SendToKafka<string, string>(config,"asdasdasdasdasdasd");
-
-        }
-    }
 }
-
