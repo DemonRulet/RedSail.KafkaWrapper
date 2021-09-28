@@ -1,4 +1,4 @@
-﻿namespace Confluent.WrapperProducer
+﻿namespace RedSail.KafkaWrapper.Producer
 {
     public enum OperationStatus
     {

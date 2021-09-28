@@ -1,7 +1,7 @@
 ﻿using Confluent.Kafka;
 using System.Text.Json;
 
-namespace Confluent.WrapperProducer
+namespace RedSail.KafkaWrapper.Producer
 {
     public static class MapMessageExtensions
     {

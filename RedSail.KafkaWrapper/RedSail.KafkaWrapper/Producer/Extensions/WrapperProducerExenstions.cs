@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Confluent.WrapperProducer
+namespace RedSail.KafkaWrapper.Producer
 {
     public static class WrapperProducerExtensions
     {
