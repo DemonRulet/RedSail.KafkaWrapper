@@ -5,12 +5,12 @@ namespace Confluent.WrapperProducer
 {
     public static class MapMessageExtensions
     {
-        public static Message<TKey, string> ToJson<TKey, TValue>(this Message<TKey, TValue> message)
+        public static Message<string, string> ToJson<TKey, TValue>(this Message<TKey, TValue> message)
         {
-            return new Message<TKey, string>
+            return new Message<string, string>
             {
                 Headers = message.Headers,
-                Key = message.Key,
+                Key = JsonSerializer.Serialize(message.Key),
                 Timestamp = message.Timestamp,
                 Value = JsonSerializer.Serialize(message.Value),
             };

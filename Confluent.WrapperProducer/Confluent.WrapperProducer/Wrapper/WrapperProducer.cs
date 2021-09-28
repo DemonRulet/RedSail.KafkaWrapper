@@ -10,13 +10,11 @@ namespace Confluent.WrapperProducer
     public class WrapperProducer : IWrapperProducer
     {
         private readonly IOptions<ProducerConfig> _producerConfig;
-        private readonly IOptions<TopicConfig> _topicConfig;
         //private readonly ILogger<WrapperProducer> _logger;
 
-        public WrapperProducer(IOptions<ProducerConfig> producerOptions, IOptions<TopicConfig> topicConfig) { 
+        public WrapperProducer(IOptions<ProducerConfig> producerOptions) { 
             //_logger = logger;
             _producerConfig = producerOptions;
-            _topicConfig = topicConfig;
         }
 
         private string[] ArrayTopics(string topicStr, char paramSeparator)
@@ -25,18 +23,19 @@ namespace Confluent.WrapperProducer
             return topics.Length > 0 ? topics : null;
         }
         
-        public async Task<OperationStatus> SendToKafka<TKey, TValue>(Message<TKey, TValue> message)
+        public async Task<OperationStatus> SendToKafka<TKey, TValue>(Message<TKey, TValue> message, string topicsStr)
         {
             ProducerConfig producerConfig = _producerConfig.Value;
-            string[] topicList = ArrayTopics(_topicConfig.Value.Names, ';');
+            string[] topics = ArrayTopics(topicsStr, ';');
 
-            using (IProducer<TKey, string> producer = new ProducerBuilder<TKey, string>(producerConfig).Build())
+            using (IProducer<string, string> producer = new ProducerBuilder<string, string>(producerConfig).Build())
             {
                 try
                 {
-                    foreach (string topic in topicList)
+                    foreach (string topic in topics)
                     {
-                        DeliveryResult<TKey, string> result = await producer.ProduceAsync(topic, message.ToJson());
+                        DeliveryResult<string, string> result = await producer.ProduceAsync(topic, message.ToJson());
+                        Console.WriteLine(result.Key + " " +  result.Message.Value);
                         //add logging
                     }
                     

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace Confluent.WrapperProducer.TestApplication
 {
+    
     public class Program
     {
         public class User
@@ -18,23 +19,19 @@ namespace Confluent.WrapperProducer.TestApplication
                 BootstrapServers = "localhost:9092",
             };
 
-            var topicConfig = new TopicConfig()
-            {
-                Names = "topic;",
-            };
 
-            IWrapperProducer producer = new WrapperProducer(Options.Create(producerConfig), Options.Create(topicConfig));
+            IWrapperProducer producer = new WrapperProducer(Options.Create(producerConfig));
 
-            await producer.SendToKafka(new Message<int, User>
+            await producer.SendToKafka(new Message<OperationStatus, User>
             {
                 Value = new User()
                 {
-                    Name = "NAME",
-                    Age = 16
+                    Name = "ASDASD",
+                    Age = 178
                 },
-                Key = 5,
+                Key = OperationStatus.Success,
                 
-            });
+            }, "topic;topic1;");
 
         }
     }

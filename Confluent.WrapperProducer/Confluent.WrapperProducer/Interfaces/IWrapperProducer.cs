@@ -5,6 +5,6 @@ namespace Confluent.WrapperProducer
 {
     public interface IWrapperProducer 
     {
-        public Task<OperationStatus> SendToKafka<TKey, TValue>(Message<TKey, TValue> message); //where TKey : struct;
+        public Task<OperationStatus> SendToKafka<TKey, TValue>(Message<TKey, TValue> message, string topicsStr); //where TKey : struct;
     }
 }
