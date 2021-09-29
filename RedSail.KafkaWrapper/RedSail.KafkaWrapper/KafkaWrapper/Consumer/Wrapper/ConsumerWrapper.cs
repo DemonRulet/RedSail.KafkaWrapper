@@ -16,7 +16,7 @@ namespace RedSail.KafkaWrapper.Consumer
 
         public void Subscribe<TValue>(string topic, IHandler<TValue> handler)
         {
-            using (var builder = new ConsumerBuilder<string, string>(_consumerConfig).Build())
+            using (var builder = new ConsumerBuilder<Ignore, string>(_consumerConfig).Build())
             {
                 builder.Subscribe(topic);
 
