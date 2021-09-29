@@ -15,5 +15,15 @@ namespace RedSail.KafkaWrapper.Producer
                 Value = JsonSerializer.Serialize(message.Value),
             };
         }
+
+        public static Message<Null, string> ToJson<TValue>(this Message<Null, TValue> message)
+        {
+            return new Message<Null, string>
+            {
+                Headers = message.Headers,
+                Timestamp = message.Timestamp,
+                Value = JsonSerializer.Serialize(message.Value),
+            };
+        }
     }
 }

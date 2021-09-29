@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>RedSail.KafkaWrapper</id>
+    <version>1.0.0</version>
+    <authors>RedSail.KafkaWrapper</authors>
+    <description>Kafka Wrapper includes sending and receiving messages</description>
+    <dependencies>
+      <group targetFramework="net5.0">
+        <dependency id="Confluent.Kafka" version="1.8.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options" version="5.0.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

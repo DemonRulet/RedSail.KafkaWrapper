@@ -5,16 +5,16 @@ using System.Text.Json;
 
 namespace RedSail.KafkaWrapper.Consumer
 {
-    public class WrapperConsumer : IWrapperConsumer
+    public class ConsumerWrapper : IConsumerWrapper
     {
         private readonly ConsumerConfig _consumerConfig;
 
-        public WrapperConsumer(ConsumerConfig consumerConfig)
+        public ConsumerWrapper(ConsumerConfig consumerConfig)
         {
             _consumerConfig = consumerConfig;
         }
 
-        public void Subscribe<TKey, TValue>(string topic, Action<Message<TKey, TValue>> handler)
+        public void Subscribe<TValue>(string topic, IHandler<TValue> handler)
         {
             using (var builder = new ConsumerBuilder<string, string>(_consumerConfig).Build())
             {
@@ -28,13 +28,12 @@ namespace RedSail.KafkaWrapper.Consumer
                     {
                         var messageJson = builder.Consume(cancelToken.Token);
                         
-                        Message<TKey, TValue> message = new()
+                        Message<Null, TValue> message = new()
                         {
                             Value = JsonSerializer.Deserialize<TValue>(messageJson.Message.Value),
-                            Key = JsonSerializer.Deserialize<TKey>(messageJson.Message.Key),
                         };
 
-                        handler(message);
+                        handler.Handler(message);
                     }
                 }
                 catch(Exception exception)
